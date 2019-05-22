@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Checkers extends AppCompatActivity implements View.OnClickListener {
@@ -420,6 +421,11 @@ public class Checkers extends AppCompatActivity implements View.OnClickListener 
         createBoard();
         checkersM.setStartedBoard(); // placing the figures in the right place for the beginning of the game
 
+        String blackPlayer = getIntent().getStringExtra("blackPlayer");
+        String whitePlayer = getIntent().getStringExtra("whitePlayer");
+
+        TextView text = findViewById(R.id.players);
+        text.setText(blackPlayer + " " + whitePlayer);
     }
 
 

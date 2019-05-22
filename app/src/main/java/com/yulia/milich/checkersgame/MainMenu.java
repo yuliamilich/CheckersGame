@@ -101,11 +101,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.btnplay:
-                intent = new Intent(this, Checkers.class);
+                intent = new Intent(this, AddUsers.class);
                 startActivity(intent);
                 break;
 
-            case R.id.music:
+            case R.id.btnMusic:
                 intent = new Intent(this, MusicList.class);
                 startActivity(intent);
                 break;
