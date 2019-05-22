@@ -16,10 +16,10 @@ import android.widget.Button;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
 
-    public static boolean isPlaying = true; // true if music is working else false
-    private boolean musicBound;
     public static MusicService musicService; // music player
     private Intent playIntent;
+    public static boolean isPlaying = true; // true if music is working else false
+    private boolean musicBound;
 
     private Button btnPlay;
     private Button btnMusic;
@@ -38,21 +38,16 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         this.btnMusic.setOnClickListener(this);
 
         musicService = new MusicService();
+
         musicBound = false;
 
-        if (playIntent == null) {
+        if(playIntent ==null)
+        {
             playIntent = new Intent(this, MusicService.class);
             bindService(playIntent, musicConnection,
                     Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
-
-
-        Intent intentGet = getIntent();
-//        if (intentGet != null) {
-////            Bundle xtras = intentGet.getExtras();
-////            gameName = xtras.getString("gameName");
-//        }
 
     }
 
@@ -112,6 +107,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.music:
                 intent = new Intent(this, MusicList.class);
+                startActivity(intent);
                 break;
 
             default:

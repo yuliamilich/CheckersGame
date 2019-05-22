@@ -11,6 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -87,13 +89,25 @@ public class MusicList extends AppCompatActivity {
         }
     }
 
+
+
+
+    //for music service
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (MainMenu.isPlaying)
+            MainMenu.musicService.resume();
+    }
+
+
     //menu
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_all, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_all, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) { //when selcting option in the menu
@@ -112,30 +126,21 @@ public class MusicList extends AppCompatActivity {
                     MainMenu.musicService.resume();
                 MainMenu.isPlaying = !MainMenu.isPlaying;
                 break;
-//            case R.id.manu_main:
-//                intent = new Intent(MusicList.this, MainMenu.class);
-//                startActivity(intent);
-//                finish();ְְְְְְְְְְְְְְְְְְְְְְְְְְְְ
-//                break;
-//
-//            case R.id.call:
-//                intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
-//                startActivity(intent);
-//                break;
-//            case R.id.exit:
-//                finish();
-//                //System.exit(0);
-//                break;
+            case R.id.manu_main:
+                intent = new Intent(this, MainMenu.class);
+                startActivity(intent);
+                finish();
+                break;
+
+            case R.id.call:
+                intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
+                startActivity(intent);
+                break;
+            case R.id.exit:
+                finish();
+                //System.exit(0);
+                break;
         }
         return true;
-    }
-
-
-    //for music service
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (MainMenu.isPlaying)
-            MainMenu.musicService.resume();
     }
 }

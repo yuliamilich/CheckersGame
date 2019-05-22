@@ -1,8 +1,13 @@
 package com.yulia.milich.checkersgame;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -198,7 +203,7 @@ public class Checkers extends AppCompatActivity implements View.OnClickListener 
         this.firstj = column;
     }
 
-    // and here
+    //
     public void blueBecameKingWhite(ImageButton[][] ckeckersBoard, ImageButton button, int column, int row) {
         ckeckersBoard[row][column].setImageResource(R.mipmap.kingwhitepiece);
         ckeckersBoard[row][column].setTag("whiteKingPiece");
@@ -256,84 +261,148 @@ public class Checkers extends AppCompatActivity implements View.OnClickListener 
 
     }
 
-    //black piece eat white piece
+    //black piece or king eat white piece
     public void redBecameBlack(ImageButton[][] ckeckersBoard, ImageButton button, int column, int row) {
-        ckeckersBoard[row][column].setImageResource(R.mipmap.blackpiece);
-        ckeckersBoard[row][column].setTag("blackPiece");
-        ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
-        ckeckersBoard[firsti][firstj].setTag("");
+        if(ckeckersBoard[firsti][firstj].getTag().equals("blackPiece")){
+            ckeckersBoard[row][column].setImageResource(R.mipmap.blackpiece);
+            ckeckersBoard[row][column].setTag("blackPiece");
+            ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
+            ckeckersBoard[firsti][firstj].setTag("");
 
-        // checking if the yellow part more little place on the board then the actual button that pressed
-        if (ckeckersBoard[firsti + 1][firstj - 1].getTag() == "whitePiece"
-                || ckeckersBoard[firsti + 1][firstj + 1].getTag() == "whitePiece")
-            if (column < firstj) {
-                ckeckersBoard[firsti + 1][firstj - 1].setImageResource(R.mipmap.invisible);
-                ckeckersBoard[firsti + 1][firstj - 1].setTag("");
-            } else if (column > firstj) {
-                ckeckersBoard[firsti + 1][firstj + 1].setImageResource(R.mipmap.invisible);
-                ckeckersBoard[firsti + 1][firstj + 1].setTag("");
+            //deleting the eaten piece from the board
+            if (ckeckersBoard[firsti + 1][firstj - 1].getTag() == "whitePiece"
+                    || ckeckersBoard[firsti + 1][firstj + 1].getTag() == "whitePiece"
+                    || ckeckersBoard[firsti + 1][firstj - 1].getTag() == "whiteKingPiece"
+                    || ckeckersBoard[firsti + 1][firstj + 1].getTag() == "whiteKingPiece")
+                if (column < firstj) {
+                    ckeckersBoard[firsti + 1][firstj - 1].setImageResource(R.mipmap.invisible);
+                    ckeckersBoard[firsti + 1][firstj - 1].setTag("");
+                } else if (column > firstj) {
+                    ckeckersBoard[firsti + 1][firstj + 1].setImageResource(R.mipmap.invisible);
+                    ckeckersBoard[firsti + 1][firstj + 1].setTag("");
+                }
+        }
+        else if(ckeckersBoard[firsti][firstj].getTag().equals("blackKingPiece")){
+            ckeckersBoard[row][column].setImageResource(R.mipmap.kingblackpiece);
+            ckeckersBoard[row][column].setTag("blackKingPiece");
+
+
+            //deleting the eaten piece from the board
+            if(firstj < column && firsti < row){
+                ckeckersBoard[row - 1][column - 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row - 1][column - 1].setTag("");
             }
+            if(firstj<column && firsti>row){
+                ckeckersBoard[row + 1][column - 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row + 1][column - 1].setTag("");
+            }
+            if(firstj>column && firsti>row){
+                ckeckersBoard[row + 1][column + 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row + 1][column + 1].setTag("");
+            }
+            if(firstj>column && firsti<row){
+                ckeckersBoard[row - 1][column + 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row - 1][column + 1].setTag("");
+            }
+
+            ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
+            ckeckersBoard[firsti][firstj].setTag("");
+        }
+
+        clearButton();
     }
 
-    //white piece eat black piece
+    //white piece or king eat black piece
     public void redBecameWhite(ImageButton[][] ckeckersBoard, ImageButton button, int column, int row) {
 
-        ckeckersBoard[row][column].setImageResource(R.mipmap.whitepiece);
-        ckeckersBoard[row][column].setTag("whitePiece");
-        ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
-        ckeckersBoard[firsti][firstj].setTag("");
+        if(ckeckersBoard[firsti][firstj].getTag().equals("whitePiece")){
+            ckeckersBoard[row][column].setImageResource(R.mipmap.whitepiece);
+            ckeckersBoard[row][column].setTag("whitePiece");
+            ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
+            ckeckersBoard[firsti][firstj].setTag("");
 
-        //checking if the yellow part more little then the actual button
-        if (ckeckersBoard[firsti - 1][firstj - 1].getTag() == "blackPiece"
-                || ckeckersBoard[firsti - 1][firstj + 1].getTag() == "blackPiece") {
-            if (column < firstj) {
-                ckeckersBoard[firsti - 1][firstj - 1].setImageResource(R.mipmap.invisible);
-                ckeckersBoard[firsti - 1][firstj - 1].setTag("");
-            }
-            if (column > firstj) {
-                ckeckersBoard[firsti - 1][firstj + 1].setImageResource(R.mipmap.invisible);
-                ckeckersBoard[firsti - 1][firstj + 1].setTag("");
+            //deleting the eaten piece from the board
+            if (ckeckersBoard[firsti - 1][firstj - 1].getTag() == "blackPiece"
+                    || ckeckersBoard[firsti - 1][firstj + 1].getTag() == "blackPiece"
+                    || ckeckersBoard[firsti - 1][firstj - 1].getTag() == "blackKingPiece"
+                    || ckeckersBoard[firsti - 1][firstj + 1].getTag() == "blackKingPiece") {
+                if (column < firstj) {
+                    ckeckersBoard[firsti - 1][firstj - 1].setImageResource(R.mipmap.invisible);
+                    ckeckersBoard[firsti - 1][firstj - 1].setTag("");
+                }
+                if (column > firstj) {
+                    ckeckersBoard[firsti - 1][firstj + 1].setImageResource(R.mipmap.invisible);
+                    ckeckersBoard[firsti - 1][firstj + 1].setTag("");
+                }
             }
         }
+        else if(ckeckersBoard[firsti][firstj].getTag().equals("whiteKingPiece")){
+            ckeckersBoard[row][column].setImageResource(R.mipmap.kingwhitepiece);
+            ckeckersBoard[row][column].setTag("whiteKingPiece");
+
+
+            //deleting the eaten piece from the board
+            if(firstj < column && firsti < row){
+                ckeckersBoard[row - 1][column - 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row - 1][column - 1].setTag("");
+            }
+            if(firstj<column && firsti>row){
+                ckeckersBoard[row + 1][column - 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row + 1][column - 1].setTag("");
+            }
+            if(firstj>column && firsti>row){
+                ckeckersBoard[row + 1][column + 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row + 1][column + 1].setTag("");
+            }
+            if(firstj>column && firsti<row){
+                ckeckersBoard[row - 1][column + 1].setImageResource(R.mipmap.invisible);
+                ckeckersBoard[row - 1][column + 1].setTag("");
+            }
+
+            ckeckersBoard[firsti][firstj].setImageResource(R.mipmap.invisible);
+            ckeckersBoard[firsti][firstj].setTag("");
+        }
+
+        clearButton();
     }
 
-    //the black piece eats the white piece
+    //the black piece eats the white piece (options of movement)
     public void eatingWhitePiece(ImageButton[][] ckeckersBoard, ImageButton button, int column, int row) {
         if ((column == 0 || column == 1) && row < 6) {
-            if (ckeckersBoard[row + 1][column + 1].getTag() == "whitePiece" && ckeckersBoard[row + 2][column + 2].getTag() == "")
+            if ((ckeckersBoard[row + 1][column + 1].getTag() == "whitePiece" || ckeckersBoard[row + 1][column + 1].getTag() == "whiteKingPiece") && ckeckersBoard[row + 2][column + 2].getTag() == "")
                 ckeckersBoard[row + 2][column + 2].setBackgroundResource(R.color.cocoabrown);
         }
 
         if ((column == 6 || column == 7) && row < 6) {
-            if (ckeckersBoard[row + 1][column - 1].getTag() == "whitePiece" && ckeckersBoard[row + 2][column - 2].getTag() == "")
+            if ((ckeckersBoard[row + 1][column - 1].getTag() == "whitePiece" || ckeckersBoard[row + 1][column - 1].getTag() == "whiteKingPiece") && ckeckersBoard[row + 2][column - 2].getTag() == "")
                 ckeckersBoard[row + 2][column - 2].setBackgroundResource(R.color.cocoabrown);
         }
 
         if ((column >= 2 && column <= 5) && row < 6) {
-            if (ckeckersBoard[row + 1][column - 1].getTag() == "whitePiece" && ckeckersBoard[row + 2][column - 2].getTag() == "")
+            if ((ckeckersBoard[row + 1][column - 1].getTag() == "whitePiece" || ckeckersBoard[row + 1][column - 1].getTag() == "whiteKingPiece") && ckeckersBoard[row + 2][column - 2].getTag() == "")
                 ckeckersBoard[row + 2][column - 2].setBackgroundResource(R.color.cocoabrown);
-            if (ckeckersBoard[row + 1][column + 1].getTag() == "whitePiece" && ckeckersBoard[row + 2][column + 2].getTag() == "")
+            if ((ckeckersBoard[row + 1][column + 1].getTag() == "whitePiece" || ckeckersBoard[row + 1][column + 1].getTag() == "whiteKingPiece") && ckeckersBoard[row + 2][column + 2].getTag() == "")
                 ckeckersBoard[row + 2][column + 2].setBackgroundResource(R.color.cocoabrown);
         }
 
     }
 
-    //the white piece eats the white piece
+    //the white piece eats the white piece (options of movement)
     public void eatingBlackPiece(ImageButton[][] ckeckersBoard, ImageButton button, int column, int row) {
         if ((column == 0 || column == 1) && row > 1) {
-            if (ckeckersBoard[row - 1][column + 1].getTag() == "blackPiece" && ckeckersBoard[row - 2][column + 2].getTag() == "")
+            if ((ckeckersBoard[row - 1][column + 1].getTag() == "blackPiece" || ckeckersBoard[row - 1][column + 1].getTag() == "blackKingPiece") && ckeckersBoard[row - 2][column + 2].getTag() == "")
                 ckeckersBoard[row - 2][column + 2].setBackgroundResource(R.color.cocoabrown);
         }
 
         if ((column == 6 || column == 7) && row > 1) {
-            if (ckeckersBoard[row - 1][column - 1].getTag() == "blackPiece" && ckeckersBoard[row - 2][column - 2].getTag() == "")
+            if ((ckeckersBoard[row - 1][column - 1].getTag() == "blackPiece" || ckeckersBoard[row - 1][column - 1].getTag() == "blackKingPiece") && ckeckersBoard[row - 2][column - 2].getTag() == "")
                 ckeckersBoard[row - 2][column - 2].setBackgroundResource(R.color.cocoabrown);
         }
 
         if ((column >= 2 && column <= 5) && row > 1) {
-            if (ckeckersBoard[row - 1][column - 1].getTag() == "blackPiece" && ckeckersBoard[row - 2][column - 2].getTag() == "")
+            if ((ckeckersBoard[row - 1][column - 1].getTag() == "blackPiece" || ckeckersBoard[row - 1][column - 1].getTag() == "blackKingPiece") && ckeckersBoard[row - 2][column - 2].getTag() == "")
                 ckeckersBoard[row - 2][column - 2].setBackgroundResource(R.color.cocoabrown);
-            if (ckeckersBoard[row - 1][column + 1].getTag() == "blackPiece" && ckeckersBoard[row - 2][column + 2].getTag() == "")
+            if ((ckeckersBoard[row - 1][column + 1].getTag() == "blackPiece" || ckeckersBoard[row - 1][column + 1].getTag() == "blackKingPiece") && ckeckersBoard[row - 2][column + 2].getTag() == "")
                 ckeckersBoard[row - 2][column + 2].setBackgroundResource(R.color.cocoabrown);
         }
 
@@ -424,13 +493,13 @@ public class Checkers extends AppCompatActivity implements View.OnClickListener 
         if (((ImageButton) v).getBackground().getConstantState().equals(getResources()
                 .getDrawable(R.color.cocoabrown).getConstantState())) {
             clearButton();
-            if (ckeckersBoard[firsti][firstj].getTag() == "whitePiece")
+            if (ckeckersBoard[firsti][firstj].getTag() == "whitePiece" || ckeckersBoard[firsti][firstj].getTag() == "whiteKingPiece")
                 redBecameWhite(ckeckersBoard, button, column, row);
-            if (ckeckersBoard[firsti][firstj].getTag() == "blackPiece")
+            if (ckeckersBoard[firsti][firstj].getTag() == "blackPiece" || ckeckersBoard[firsti][firstj].getTag() == "blackKingPiece")
                 redBecameBlack(ckeckersBoard, button, column, row);
         }
 
-        ///here problem
+        ///here problem (is there still a problem??)
         if (((ImageButton) v).getBackground().getConstantState().equals(getResources()
                 .getDrawable(R.color.bluelight).getConstantState())) {
             clearButton();
@@ -479,6 +548,50 @@ public class Checkers extends AppCompatActivity implements View.OnClickListener 
             tl.addView(ckRowBoard[i]);
         }
 
+    }
+
+
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_all, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { //when selcting option in the menu
+        // main --> go to menu
+        //music --> stop/play music
+        //instraction --> go to instraction
+        // call --> go to phone call
+        int id = item.getItemId();
+        Intent intent = null;
+
+        switch (id) {
+            case R.id.music:
+                if (MainMenu.isPlaying)
+                    MainMenu.musicService.pause();
+                else
+                    MainMenu.musicService.resume();
+                MainMenu.isPlaying = !MainMenu.isPlaying;
+                break;
+            case R.id.manu_main:
+                intent = new Intent(this, MainMenu.class);
+                startActivity(intent);
+                finish();
+                break;
+
+            case R.id.call:
+                intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
+                startActivity(intent);
+                break;
+            case R.id.exit:
+                finish();
+                //System.exit(0);
+                break;
+        }
+        return true;
     }
 
 }
